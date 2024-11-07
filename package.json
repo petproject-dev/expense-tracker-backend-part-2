@@ -24,14 +24,15 @@
     "globals": "^15.14.0",
     "husky": "^9.1.6",
     "prettier": "^3.3.3",
+    "prisma": "^5.22.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1"
   },
   "dependencies": {
-    "better-sqlite3": "^11.7.0",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
   },
   "lint-staged": {
     "*.{ts,js}": [
