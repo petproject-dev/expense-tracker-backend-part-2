@@ -1,40 +1,50 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import config from './config';
+import errorHandler from './middlewares/errorHandler';
+import validator from './middlewares/validator';
+import createExpense from './validatorSchemas/createExpense';
 
 const app = express();
+app.use(express.json());
 
 const prisma = new PrismaClient();
 
-app.post('/api/expenses', async (req: Request, res: Response) => {
-	const expenses = [
-		{
-			amount: 100,
-			currency: 'USD',
-			description: 'Bar fee',
-			category: 'category 1',
-		},
-		{
-			amount: 10,
-			currency: 'EUR',
-			description: 'Football fee',
-			category: 'category 2',
-		},
-	];
+app.post(
+	'/api/expenses',
+	validator(createExpense),
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const data = req.body;
+			await prisma.expenses.createMany({ data });
 
-	await prisma.expenses.createMany({ data: expenses });
+			res.status(201).send('ok');
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
-	res.send('ok');
-});
+app.get(
+	'/api/expenses',
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const result = await prisma.expenses.findMany();
 
-app.get('/api/expenses', async (req: Request, res: Response) => {
-	const result = await prisma.expenses.findMany();
-
-	res.send(result);
-});
+			res.send(result);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 app.get('/api/ping', (req: Request, res: Response) => {
 	res.json({ message: 'pong' });
+});
+
+app.use(errorHandler);
+app.use('*', (req: Request, res: Response) => {
+	res.status(404).send('Page not found');
 });
 
 app.listen(config.port, () =>
