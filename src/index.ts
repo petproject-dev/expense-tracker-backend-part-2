@@ -6,11 +6,13 @@ import validator from './middlewares/validator';
 import createExpense from './validatorSchemas/createExpense';
 import Exception from './common/Exception';
 import updateExpense from './validatorSchemas/updateExpense';
+import Logger from './common/Logger';
 
 const app = express();
 app.use(express.json());
 
 const prisma = new PrismaClient();
+const logger = new Logger();
 
 app.post(
 	'/api/expenses',
@@ -18,8 +20,9 @@ app.post(
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const data = req.body;
-			await prisma.expenses.createMany({ data });
+			const result = await prisma.expenses.create({ data });
 
+			logger.log(`Expense created with ID: ${result.id}`);
 			res.status(201).send('ok');
 		} catch (error) {
 			next(error);
@@ -53,15 +56,18 @@ app.get(
 			const id = Number(req.params.id);
 
 			if (Number.isNaN(id)) {
+				logger.warn(`Expense not found with ID: ${req.params.id}`);
 				throw new Exception(404, 'Expense not found');
 			}
 
 			const result = await prisma.expenses.findFirst({ where: { id } });
 
 			if (!result) {
+				logger.warn(`Expense not found with ID: ${req.params.id}`);
 				throw new Exception(404, 'Expense not found');
 			}
 
+			logger.log(`Expense retrieved with ID: ${result.id}`);
 			res.send(result);
 		} catch (error) {
 			next(error);
@@ -77,13 +83,17 @@ app.patch(
 			const id = Number(req.params.id);
 
 			if (Number.isNaN(id)) {
+				logger.warn(
+					`Attempt to update non-existing expense with ID: ${req.params.id}`,
+				);
 				throw new Exception(404, 'Expense not found');
 			}
 
 			const data = req.body;
 
-			await prisma.expenses.update({ data, where: { id } });
+			const result = await prisma.expenses.update({ data, where: { id } });
 
+			logger.log(`Expense updated with ID: ${result.id}`);
 			res.send('ok');
 		} catch (error) {
 			next(error);
@@ -98,17 +108,24 @@ app.delete(
 			const id = Number(req.params.id);
 
 			if (Number.isNaN(id)) {
+				logger.warn(
+					`Attempt to delete non-existing expense with ID: ${req.params.id}`,
+				);
 				throw new Exception(404, 'Expense not found');
 			}
 
 			const record = await prisma.expenses.findFirst({ where: { id } });
 
 			if (!record) {
+				logger.warn(
+					`Attempt to delete non-existing expense with ID: ${req.params.id}`,
+				);
 				throw new Exception(404, 'Expense not found');
 			}
 
-			await prisma.expenses.delete({ where: { id } });
+			const result = await prisma.expenses.delete({ where: { id } });
 
+			logger.log(`Expense deleted with ID: ${result.id}`);
 			res.status(204).send('ok');
 		} catch (error) {
 			next(error);
