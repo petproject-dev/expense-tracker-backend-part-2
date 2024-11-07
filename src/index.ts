@@ -5,6 +5,7 @@ import errorHandler from './middlewares/errorHandler';
 import validator from './middlewares/validator';
 import createExpense from './validatorSchemas/createExpense';
 import Exception from './common/Exception';
+import updateExpense from './validatorSchemas/updateExpense';
 
 const app = express();
 app.use(express.json());
@@ -62,6 +63,53 @@ app.get(
 			}
 
 			res.send(result);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
+
+app.patch(
+	'/api/expenses/:id',
+	validator(updateExpense),
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const id = Number(req.params.id);
+
+			if (Number.isNaN(id)) {
+				throw new Exception(404, 'Expense not found');
+			}
+
+			const data = req.body;
+
+			await prisma.expenses.update({ data, where: { id } });
+
+			res.send('ok');
+		} catch (error) {
+			next(error);
+		}
+	},
+);
+
+app.delete(
+	'/api/expenses/:id',
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const id = Number(req.params.id);
+
+			if (Number.isNaN(id)) {
+				throw new Exception(404, 'Expense not found');
+			}
+
+			const record = await prisma.expenses.findFirst({ where: { id } });
+
+			if (!record) {
+				throw new Exception(404, 'Expense not found');
+			}
+
+			await prisma.expenses.delete({ where: { id } });
+
+			res.status(204).send('ok');
 		} catch (error) {
 			next(error);
 		}
