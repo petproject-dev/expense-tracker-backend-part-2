@@ -4,6 +4,7 @@ import config from './config';
 import errorHandler from './middlewares/errorHandler';
 import validator from './middlewares/validator';
 import createExpense from './validatorSchemas/createExpense';
+import Exception from './common/Exception';
 
 const app = express();
 app.use(express.json());
@@ -29,7 +30,36 @@ app.get(
 	'/api/expenses',
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const result = await prisma.expenses.findMany();
+			const limit = Number(req.query.limit) || 10;
+			const offset = Number(req.query.offset) || 0;
+
+			const result = await prisma.expenses.findMany({
+				take: limit,
+				skip: offset,
+			});
+
+			res.send(result);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
+
+app.get(
+	'/api/expenses/:id',
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const id = Number(req.params.id);
+
+			if (Number.isNaN(id)) {
+				throw new Exception(404, 'Expense not found');
+			}
+
+			const result = await prisma.expenses.findFirst({ where: { id } });
+
+			if (!result) {
+				throw new Exception(404, 'Expense not found');
+			}
 
 			res.send(result);
 		} catch (error) {
