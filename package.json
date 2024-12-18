@@ -8,6 +8,7 @@
     "prepare": "husky install",
     "lint": "pretty-quick --staged && lint-staged",
     "build": "tsc",
+    "start": "node build/index.js",
     "dev": "ts-node-dev --no-notify --clear src/index.ts"
   },
   "keywords": [],
