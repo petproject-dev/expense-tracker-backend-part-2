@@ -1,0 +1,17 @@
+{
+  "name": "expense-tracker-part-1",
+  "version": "1.0.0",
+  "description": "Expense Tracker is a simple web application for tracking income and expenses. This project is created to practice JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "dev": " ts-node-dev src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
+  }
+}
