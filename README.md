@@ -11,13 +11,7 @@ Expense Tracker is a simple web application for tracking income and expenses. Th
 
 - Any UI Framework
 - NodeJS
-- CSS Preprocessor
+- CSS
 
-## How to Run the Project
-
-1. Clone the repository
-2. Run:
-
-```bash
-npm run dev
-```
+## Materials
+- [Design](https://www.figma.com/design/E6wZYCTyHA35ACD5Q3XCYr/Money-Tracker?node-id=4-4649&p=f&t=9fdpvhaVbCHeTAAd-0)
