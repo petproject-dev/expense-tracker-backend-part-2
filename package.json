@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "build": "tsc",
     "start": "SET NODE_ENV=production & node build/index.js",
-    "dev": "ts-node-dev --no-notify --clear src/index.ts"
+    "dev": "ts-node-dev --no-notify --clear src/index.ts",
+		"migrate": "prisma migrate dev"
   },
   "keywords": [],
   "author": "",

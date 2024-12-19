@@ -1,9 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import config from './config';
-import errorHandler from './middlewares/errorHandler';
-import validator from './middlewares/validator';
-import createExpense from './validatorSchemas/createExpense';
 
 const app = express();
 app.use(express.json());
@@ -12,7 +9,6 @@ const prisma = new PrismaClient();
 
 app.post(
 	'/api/expenses',
-	validator(createExpense),
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const data = req.body;
@@ -40,11 +36,6 @@ app.get(
 
 app.get('/api/ping', (req: Request, res: Response) => {
 	res.json({ message: 'pong' });
-});
-
-app.use(errorHandler);
-app.use('*', (req: Request, res: Response) => {
-	res.status(404).send('Page not found');
 });
 
 app.listen(config.port, () =>
