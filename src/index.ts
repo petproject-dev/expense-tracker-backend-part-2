@@ -4,12 +4,18 @@ import Database from 'better-sqlite3';
 
 const app = express();
 
-const db = new Database('dev.db', { verbose: console.log });
+let db;
+try {
+	db = new Database('dev.db', { verbose: console.log });
+} catch (error) {
+	console.log({ error });
+	process.exit(1);
+}
 
 db.exec(
 	`CREATE TABLE IF NOT EXISTS expenses (
 	id INTEGER,
-	amount INTEGER,
+	amount REAL,
 	currency TEXT,
 	description TEXT,
 	category TEXT,
