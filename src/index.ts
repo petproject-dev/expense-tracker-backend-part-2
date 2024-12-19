@@ -1,42 +1,23 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import express, { Request, Response } from 'express';
 import config from './config';
-import errorHandler from './middlewares/errorHandler';
-import validator from './middlewares/validator';
-import createExpenseSchema from './validatorSchemas/createExpenseSchema';
+import errorHandler from './helpers/middlewares/errorHandler';
+import validator from './helpers/middlewares/validator';
+import { createExpenseValidator } from './expenses/create-expense.validator';
+import {
+	createExpenseController,
+	findExpensesController,
+} from './expenses/expenses.controller';
 
 const app = express();
 app.use(express.json());
 
-const prisma = new PrismaClient();
-
 app.post(
 	'/api/expenses',
-	validator(createExpenseSchema),
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const data = req.body;
-			await prisma.expenses.createMany({ data });
-
-			res.status(201).send('ok');
-		} catch (error) {
-			next(error);
-		}
-	},
+	validator(createExpenseValidator),
+	createExpenseController.bind(createExpenseController),
 );
 
-app.get(
-	'/api/expenses',
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const result = await prisma.expenses.findMany();
-
-			res.send(result);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
+app.get('/api/expenses', findExpensesController.bind(findExpensesController));
 
 app.get('/api/ping', (req: Request, res: Response) => {
 	res.json({ message: 'pong' });

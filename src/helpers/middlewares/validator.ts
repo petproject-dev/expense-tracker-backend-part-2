@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Schema } from 'joi';
-import Exception from '../common/Exception';
+import Exception from '../Exception';
 
 const validator = (schema: Schema, property = 'body') => {
 	return (req: Request, res: Response, next: NextFunction) => {
