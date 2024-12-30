@@ -24,7 +24,13 @@ expensesController.get(
 	'/',
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const result = await findExpensesService();
+			const limit = Number(req.query.limit) || 10;
+			const offset = Number(req.query.offset) || 0;
+
+			const result = await findExpensesService({
+				take: limit,
+				skip: offset,
+			});
 
 			res.send(result);
 		} catch (error) {
