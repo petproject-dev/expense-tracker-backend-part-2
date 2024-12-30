@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import config from './config';
-import errorHandler from './helpers/middlewares/errorHandler';
 import { expensesController } from './expenses/expenses.controller';
+import errorHandler from './helpers/middlewares/errorHandler';
 
 const app = express();
 app.use(express.json());
