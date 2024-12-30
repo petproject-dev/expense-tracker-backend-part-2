@@ -2,8 +2,10 @@ import express, { NextFunction, Request, Response } from 'express';
 import * as expenseService from './expenses.service';
 import validator from '../helpers/middlewares/validator';
 import { createExpenseSchema } from './dto/create-expense.dto';
+import Logger from '../helpers/Logger';
 
 export const expensesController = express.Router();
+const logger = new Logger();
 
 expensesController.post(
 	'/',
@@ -12,7 +14,7 @@ expensesController.post(
 		try {
 			const data = req.body;
 			const result = await expenseService.create(data);
-
+			logger.log(`Expense created. Id: ${result.id}`);
 			res.status(201).send(result);
 		} catch (error) {
 			next(error);
@@ -45,8 +47,8 @@ expensesController.patch(
 		try {
 			const id = Number(req.params.id);
 
-			await expenseService.update(id, req.body);
-
+			const result = await expenseService.update(id, req.body);
+			logger.log(`Expense updated. Id: ${result.id}`);
 			res.send('ok');
 		} catch (error) {
 			next(error);
@@ -61,6 +63,7 @@ expensesController.delete(
 			const id = Number(req.params.id);
 
 			await expenseService.deleteOne(id);
+			logger.log(`Expense deleted. Id: ${id}`);
 
 			res.status(204).send('ok');
 		} catch (error) {

@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import Exception from '../Exception';
+import Logger from '../Logger';
+
+const logger = new Logger();
 
 const errorHandler = (
 	err: Error | Exception,
@@ -10,6 +13,8 @@ const errorHandler = (
 	if (res.headersSent) {
 		return next(err);
 	}
+
+	logger.error(err);
 
 	if (err instanceof Exception) {
 		res.status(err.statusCode || 500).json({ error: err.message });
