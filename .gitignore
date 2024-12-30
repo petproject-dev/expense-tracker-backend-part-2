@@ -2,4 +2,5 @@
 .env
 /build
 .eslintcache
-app.log
+.idea
+*.log

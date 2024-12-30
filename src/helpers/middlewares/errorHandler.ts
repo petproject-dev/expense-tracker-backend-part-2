@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Exception from '../common/Exception';
+import Exception from '../Exception';
 import Logger from '../common/Logger';
 
 const logger = new Logger();
