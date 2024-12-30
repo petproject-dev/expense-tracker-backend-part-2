@@ -1,7 +1,7 @@
 import { db } from '../db/db.service';
-import { CreateExpenseValidator } from './create-expense.validator';
+import { CreateExpenseType } from './expenses.types';
 
 export const findManyRepository = async () => await db.expenses.findMany();
 
-export const createRepository = async (data: CreateExpenseValidator) =>
+export const createRepository = async (data: CreateExpenseType) =>
 	await db.expenses.create({ data });

@@ -1,10 +1,10 @@
 import { createRepository, findManyRepository } from './expenses.repository';
-import { CreateExpenseValidator } from './create-expense.validator';
+import { CreateExpenseType } from './expenses.types';
 
 export const findExpensesService = async () => {
 	return await findManyRepository();
 };
 
-export const createExpenseService = async (data: CreateExpenseValidator) => {
+export const createExpenseService = async (data: CreateExpenseType) => {
 	return await createRepository(data);
 };

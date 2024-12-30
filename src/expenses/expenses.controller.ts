@@ -8,9 +8,9 @@ export const createExpenseController = async (
 ) => {
 	try {
 		const data = req.body;
-		await createExpenseService(data);
+		const result = await createExpenseService(data);
 
-		res.status(201).send('ok');
+		res.status(201).send(result);
 	} catch (error) {
 		next(error);
 	}
