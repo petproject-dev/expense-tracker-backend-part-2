@@ -11,8 +11,6 @@ const errorHandler = (
 		return next(err);
 	}
 
-	console.error(err.stack);
-
 	if (err instanceof Exception) {
 		res.status(err.statusCode || 500).json({ error: err.message });
 	}

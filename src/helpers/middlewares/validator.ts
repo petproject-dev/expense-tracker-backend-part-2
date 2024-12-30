@@ -1,17 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import { Schema } from 'joi';
+import { Schema, ValidationError } from 'yup';
 import Exception from '../Exception';
 
 const validator = (schema: Schema, property = 'body') => {
-	return (req: Request, res: Response, next: NextFunction) => {
+	return async (req: Request, res: Response, next: NextFunction) => {
 		const data = property === 'body' ? req.body : req.query;
-		const { error } = schema.validate(data, { abortEarly: false });
+		try {
+			await schema.validate(data);
+		} catch (error) {
+			const err = error as ValidationError;
 
-		if (error) {
-			throw new Exception(
-				400,
-				`${error.details.map(({ message }) => message)}`,
-			);
+			next(new Exception(400, `${err.errors.map((message) => message)}`));
 		}
 
 		next();

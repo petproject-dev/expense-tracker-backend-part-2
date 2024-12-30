@@ -1,10 +1,10 @@
 import { createRepository, findManyRepository } from './expenses.repository';
-import { CreateExpenseType } from './expenses.types';
+import { CreateExpenseDto } from './dto/create-expense.dto';
 
 export const findExpensesService = async () => {
 	return await findManyRepository();
 };
 
-export const createExpenseService = async (data: CreateExpenseType) => {
+export const createExpenseService = async (data: CreateExpenseDto) => {
 	return await createRepository(data);
 };
