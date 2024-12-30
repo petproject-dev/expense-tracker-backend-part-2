@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "build": "tsc",
     "start": "SET NODE_ENV=production & node build/index.js",
-    "dev": "ts-node-dev --no-notify --clear src/index.ts"
+    "dev": "ts-node-dev --no-notify --clear src/index.ts",
+    "migrate": "prisma migrate dev"
   },
   "keywords": [],
   "author": "",
@@ -23,13 +24,16 @@
     "globals": "^15.14.0",
     "husky": "^9.1.6",
     "prettier": "^3.3.3",
+    "prisma": "^5.22.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "yup": "^1.6.1"
   },
   "lint-staged": {
     "*.{ts,js}": [
