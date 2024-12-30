@@ -8,10 +8,19 @@ export const create = async (data: CreateExpenseDto) =>
 export const findMany = async ({
 	take,
 	skip,
+	fromDate,
+	toDate,
 }: {
 	take: number;
 	skip: number;
-}) => await db.expenses.findMany({ take, skip });
+	fromDate?: string;
+	toDate?: string;
+}) =>
+	await db.expenses.findMany({
+		take,
+		skip,
+		where: { createdAt: { gt: fromDate, lt: toDate } },
+	});
 
 export const findOne = async (id: number) =>
 	await db.expenses.findFirst({ where: { id } });

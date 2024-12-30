@@ -8,8 +8,22 @@ export const create = (data: CreateExpenseDto) => {
 	return expenseRepository.create(data);
 };
 
-export const findMany = ({ take, skip }: { take: number; skip: number }) => {
-	return expenseRepository.findMany({ take, skip });
+export const findOne = (id: number) => {
+	return expenseRepository.findOne(id);
+};
+
+export const findMany = ({
+	take,
+	skip,
+	fromDate,
+	toDate,
+}: {
+	take: number;
+	skip: number;
+	fromDate?: string;
+	toDate?: string;
+}) => {
+	return expenseRepository.findMany({ take, skip, fromDate, toDate });
 };
 
 export const update = async (id: number, data: UpdateExpenseDto) => {
