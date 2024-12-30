@@ -1,7 +1,7 @@
 import winston, { Logger as WinstonLogger } from 'winston';
 import config from '../config';
 
-export default class Logger {
+class Logger {
 	logger: WinstonLogger;
 
 	constructor() {
@@ -34,3 +34,5 @@ export default class Logger {
 		this.logger.error(message);
 	}
 }
+
+export const logger = new Logger();

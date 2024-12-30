@@ -2,9 +2,7 @@ import * as expenseRepository from './expenses.repository';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import Exception from '../helpers/Exception';
-import Logger from '../helpers/Logger';
-
-const logger = new Logger();
+import { logger } from '../helpers/Logger';
 
 export const create = (data: CreateExpenseDto) => {
 	return expenseRepository.create(data);

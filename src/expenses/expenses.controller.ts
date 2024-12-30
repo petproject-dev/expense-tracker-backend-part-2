@@ -2,10 +2,9 @@ import express, { NextFunction, Request, Response } from 'express';
 import * as expenseService from './expenses.service';
 import validator from '../helpers/middlewares/validator';
 import { createExpenseSchema } from './dto/create-expense.dto';
-import Logger from '../helpers/Logger';
+import { logger } from '../helpers/Logger';
 
 export const expensesController = express.Router();
-const logger = new Logger();
 
 expensesController.post(
 	'/',
