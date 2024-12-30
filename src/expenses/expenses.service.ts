@@ -2,6 +2,9 @@ import * as expenseRepository from './expenses.repository';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import Exception from '../helpers/Exception';
+import Logger from '../helpers/Logger';
+
+const logger = new Logger();
 
 export const create = (data: CreateExpenseDto) => {
 	return expenseRepository.create(data);
@@ -15,6 +18,7 @@ export const update = async (id: number, data: UpdateExpenseDto) => {
 	const record = await expenseRepository.findOne(id);
 
 	if (!record) {
+		logger.warn(`Expense not found. Id: ${id}`);
 		throw new Exception(404, 'Expense not found');
 	}
 
@@ -25,6 +29,7 @@ export const deleteOne = async (id: number) => {
 	const record = await expenseRepository.findOne(id);
 
 	if (!record) {
+		logger.warn(`Expense not found. Id: ${id}`);
 		throw new Exception(404, 'Expense not found');
 	}
 

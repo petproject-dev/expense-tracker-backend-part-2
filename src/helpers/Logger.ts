@@ -5,9 +5,10 @@ export default class Logger {
 	logger: WinstonLogger;
 
 	constructor() {
-		const loggerTransports = config.isProduction
-			? [new winston.transports.File({ filename: 'app.log' })]
-			: [new winston.transports.Console()];
+		const loggerTransports =
+			config.NODE_ENV === 'production'
+				? [new winston.transports.File({ filename: 'app.log' })]
+				: [new winston.transports.Console()];
 
 		this.logger = winston.createLogger({
 			level: 'info',
