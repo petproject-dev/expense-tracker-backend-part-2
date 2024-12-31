@@ -5,45 +5,45 @@ import Exception from '../helpers/Exception';
 import { logger } from '../helpers/Logger';
 
 export const create = (data: CreateExpenseDto) => {
-	return expenseRepository.create(data);
+  return expenseRepository.create(data);
 };
 
 export const findOne = (id: number) => {
-	return expenseRepository.findOne(id);
+  return expenseRepository.findOne(id);
 };
 
 export const findMany = ({
-	take,
-	skip,
-	fromDate,
-	toDate,
+  take,
+  skip,
+  fromDate,
+  toDate,
 }: {
-	take: number;
-	skip: number;
-	fromDate?: string;
-	toDate?: string;
+  take: number;
+  skip: number;
+  fromDate?: string;
+  toDate?: string;
 }) => {
-	return expenseRepository.findMany({ take, skip, fromDate, toDate });
+  return expenseRepository.findMany({ take, skip, fromDate, toDate });
 };
 
 export const update = async (id: number, data: UpdateExpenseDto) => {
-	const record = await expenseRepository.findOne(id);
+  const record = await expenseRepository.findOne(id);
 
-	if (!record) {
-		logger.warn(`Expense not found. Id: ${id}`);
-		throw new Exception(404, 'Expense not found');
-	}
+  if (!record) {
+    logger.warn(`Expense not found. Id: ${id}`);
+    throw new Exception(404, 'Expense not found');
+  }
 
-	return expenseRepository.update(id, data);
+  return expenseRepository.update(id, data);
 };
 
 export const deleteOne = async (id: number) => {
-	const record = await expenseRepository.findOne(id);
+  const record = await expenseRepository.findOne(id);
 
-	if (!record) {
-		logger.warn(`Expense not found. Id: ${id}`);
-		throw new Exception(404, 'Expense not found');
-	}
+  if (!record) {
+    logger.warn(`Expense not found. Id: ${id}`);
+    throw new Exception(404, 'Expense not found');
+  }
 
-	return expenseRepository.deleteOne(id);
+  return expenseRepository.deleteOne(id);
 };

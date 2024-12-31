@@ -8,86 +8,74 @@ import { parseDate } from '../helpers/dateUtils';
 export const expensesController = express.Router();
 
 expensesController.post(
-	'/',
-	validator(createExpenseSchema),
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const data = req.body;
-			const result = await expenseService.create(data);
-			logger.log(`Expense created. Id: ${result.id}`);
-			res.status(201).send(result.id);
-		} catch (error) {
-			next(error);
-		}
-	},
+  '/',
+  validator(createExpenseSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = req.body;
+      const result = await expenseService.create(data);
+      logger.log(`Expense created. Id: ${result.id}`);
+      res.status(201).send(result.id);
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
-expensesController.get(
-	'/',
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const limit = Number(req.query.limit) || 10;
-			const offset = Number(req.query.offset) || 0;
+expensesController.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+    const offset = Number(req.query.offset) || 0;
 
-			const fromDate = parseDate(req.query.fromDate, true);
-			const toDate = parseDate(req.query.toDate);
+    const fromDate = parseDate(req.query.fromDate, true);
+    const toDate = parseDate(req.query.toDate);
 
-			const result = await expenseService.findMany({
-				take: limit,
-				skip: offset,
-				fromDate,
-				toDate,
-			});
+    const result = await expenseService.findMany({
+      take: limit,
+      skip: offset,
+      fromDate,
+      toDate,
+    });
 
-			res.send(result);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }
+});
 
-expensesController.get(
-	'/:id',
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const id = Number(req.params.id);
+expensesController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
 
-			const result = await expenseService.findOne(id);
+    const result = await expenseService.findOne(id);
 
-			res.send(result);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }
+});
 
-expensesController.patch(
-	'/:id',
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const id = Number(req.params.id);
+expensesController.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
 
-			const result = await expenseService.update(id, req.body);
-			logger.log(`Expense updated. Id: ${result.id}`);
-			res.status(204);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
+    const result = await expenseService.update(id, req.body);
+    logger.log(`Expense updated. Id: ${result.id}`);
+    res.status(204);
+  } catch (error) {
+    next(error);
+  }
+});
 
-expensesController.delete(
-	'/:id',
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const id = Number(req.params.id);
+expensesController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
 
-			await expenseService.deleteOne(id);
-			logger.log(`Expense deleted. Id: ${id}`);
+    await expenseService.deleteOne(id);
+    logger.log(`Expense deleted. Id: ${id}`);
 
-			res.status(204);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
+    res.status(204);
+  } catch (error) {
+    next(error);
+  }
+});
