@@ -1,8 +1,11 @@
+type Currency = 'USD' | 'EUR'
+
 export type Expense = {
 	id: number;
+	name: string;
 	amount: number;
-	currency: 'USD' | 'EUR';
-	description?: string;
+	currency: Currency;
+	date: Date;
 	category: string;
 	createdAt: Date;
 	updatedAt: Date;

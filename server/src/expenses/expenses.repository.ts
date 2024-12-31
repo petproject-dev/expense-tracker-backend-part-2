@@ -19,7 +19,7 @@ export const findMany = async ({
 	await db.expenses.findMany({
 		take,
 		skip,
-		where: { createdAt: { gt: fromDate, lt: toDate } },
+		where: { date: { gt: fromDate, lt: toDate } },
 	});
 
 export const findOne = async (id: number) =>

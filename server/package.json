@@ -1,5 +1,5 @@
 {
-  "name": "expense-tracker-part-1",
+  "name": "expense-tracker-server-part-1",
   "version": "1.0.0",
   "description": "Expense Tracker is a simple web application for tracking income and expenses. This project is created to practice JavaScript",
   "main": "index.js",
