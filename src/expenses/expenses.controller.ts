@@ -4,6 +4,7 @@ import validator from '../helpers/middlewares/validator';
 import { createExpenseSchema } from './dto/create-expense.dto';
 import { logger } from '../helpers/Logger';
 import { parseDate } from '../helpers/dateUtils';
+import { updateExpenseSchema } from './dto/update-expense.dto';
 
 export const expensesController = express.Router();
 
@@ -14,8 +15,9 @@ expensesController.post(
     try {
       const data = req.body;
       const result = await expenseService.create(data);
+
       logger.log(`Expense created. Id: ${result.id}`);
-      res.status(201).send(result.id);
+      res.status(201).json(result.id);
     } catch (error) {
       next(error);
     }
@@ -37,7 +39,7 @@ expensesController.get('/', async (req: Request, res: Response, next: NextFuncti
       toDate,
     });
 
-    res.send(result);
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -49,23 +51,27 @@ expensesController.get('/:id', async (req: Request, res: Response, next: NextFun
 
     const result = await expenseService.findOne(id);
 
-    res.send(result);
+    res.json(result);
   } catch (error) {
     next(error);
   }
 });
 
-expensesController.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const id = Number(req.params.id);
+expensesController.patch(
+  '/:id',
+  validator(updateExpenseSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
 
-    const result = await expenseService.update(id, req.body);
-    logger.log(`Expense updated. Id: ${result.id}`);
-    res.status(204);
-  } catch (error) {
-    next(error);
-  }
-});
+      const result = await expenseService.update(id, req.body);
+      logger.log(`Expense updated. Id: ${result.id}`);
+      res.status(204).json();
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 expensesController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -74,7 +80,7 @@ expensesController.delete('/:id', async (req: Request, res: Response, next: Next
     await expenseService.deleteOne(id);
     logger.log(`Expense deleted. Id: ${id}`);
 
-    res.status(204);
+    res.status(204).json();
   } catch (error) {
     next(error);
   }

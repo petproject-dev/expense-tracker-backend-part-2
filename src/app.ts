@@ -29,6 +29,10 @@ const bootstrap = () => {
     useMiddlewares();
     useRoutes();
     useExceptionFilter();
+  };
+
+  const start = () => {
+    init();
 
     const server = app.listen(config.port, () =>
       console.log(`Server listening on port ${config.port}`),
@@ -42,7 +46,7 @@ const bootstrap = () => {
     });
   };
 
-  return { init };
+  return { init, start, app };
 };
 
-export const { init } = bootstrap();
+export const { init, start, app } = bootstrap();

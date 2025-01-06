@@ -7,6 +7,4 @@ export type Expense = {
   currency: Currency;
   date: Date;
   category: string;
-  createdAt: Date;
-  updatedAt: Date;
 };

@@ -8,8 +8,15 @@ export const create = (data: CreateExpenseDto) => {
   return expenseRepository.create(data);
 };
 
-export const findOne = (id: number) => {
-  return expenseRepository.findOne(id);
+export const findOne = async (id: number) => {
+  const result = await expenseRepository.findOne(id);
+
+  if (!result) {
+    logger.warn(`Expense not found. Id: ${id}`);
+    throw new Exception(404, 'Expense not found');
+  }
+
+  return result;
 };
 
 export const findMany = ({
@@ -28,7 +35,7 @@ export const findMany = ({
 
 export const update = async (id: number, data: UpdateExpenseDto) => {
   const record = await expenseRepository.findOne(id);
-
+  console.log({ record });
   if (!record) {
     logger.warn(`Expense not found. Id: ${id}`);
     throw new Exception(404, 'Expense not found');

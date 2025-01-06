@@ -14,12 +14,10 @@ datasource db {
 }
 
 model Expenses {
-  id        Int      @id @default(autoincrement())
-  name      String
-  amount    Float
-  currency  String
-  category  String
-  date      DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id       Int      @id @default(autoincrement())
+  name     String
+  amount   Float
+  currency String
+  category String
+  date     DateTime
 }

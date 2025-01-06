@@ -1,6 +1,8 @@
 import { isMatch } from 'date-fns';
 
 export const parseDate = (date: unknown, startDate = false) => {
+  if (date === undefined) return;
+
   const isValidDate = isMatch(date as string, 'yyyy-MM-dd');
 
   if (!isValidDate) return;
