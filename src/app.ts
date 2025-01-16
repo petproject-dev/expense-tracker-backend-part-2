@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import config from './config';
 import { expensesController } from './expenses/expenses.controller';
 import errorHandler from './helpers/middlewares/errorHandler';
@@ -9,6 +10,7 @@ const bootstrap = () => {
 
   const useMiddlewares = () => {
     app.use(express.json());
+    app.use(cors());
   };
 
   const useRoutes = () => {
