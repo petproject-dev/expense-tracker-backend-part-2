@@ -7,7 +7,7 @@ export const parseDate = (date: unknown, startDate = false) => {
 
   if (!isValidDate) return;
 
-  const postfix = startDate ? 'T00:00:00.000Z' : 'T23:59:59.999Z';
+  const postfix = startDate ? 'T00:00:00.000Z' : 'T12:00:00.000Z';
 
   return date + postfix;
 };

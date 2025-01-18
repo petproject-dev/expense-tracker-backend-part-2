@@ -35,7 +35,6 @@ export const findMany = ({
 
 export const update = async (id: number, data: UpdateExpenseDto) => {
   const record = await expenseRepository.findOne(id);
-  console.log({ record });
   if (!record) {
     logger.warn(`Expense not found. Id: ${id}`);
     throw new Exception(404, 'Expense not found');
